@@ -1,0 +1,394 @@
+{
+	"info": {
+		"_postman_id": "74e897e2-94a3-4238-bc18-7aa7dbd47c85",
+		"name": "Encryptation Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AES CBC",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const AES_KEY = 'RAxKYpLmBE6ob0zp'",
+							"const AES_VECTOR = 'I8zyA4lVhMCaJ5Kg'",
+							"",
+							"const name = 'usuario';",
+							"const lastname = 'test'",
+							"const documentType = \"rut\";",
+							"const phone = '912345678'",
+							"const email = 'test.usuario@gmail.com'",
+							"",
+							"const body = {",
+							"    name,",
+							"    lastname,",
+							"    documentType,",
+							"    phone,",
+							"    email",
+							"}",
+							"",
+							"// ------ Libreria forgeJS ------",
+							"if (!pm.globals.has(\"forgeJS\")) {",
+							"    pm.sendRequest(\"https://raw.githubusercontent.com/loveiset/RSAForPostman/master/forge.js\", (err, res) => {",
+							"        if (!err) {",
+							"            pm.globals.set(\"forgeJS\", res.text())",
+							"        }",
+							"    })",
+							"} else {",
+							"    eval(postman.getGlobalVariable(\"forgeJS\"));",
+							"",
+							"    function encrypt(data){",
+							"        let cipher = CryptoJS.AES.encrypt(data, CryptoJS.enc.Utf8.parse(AES_KEY), {",
+							"            iv: CryptoJS.enc.Utf8.parse(AES_VECTOR), // parse the IV ",
+							"            padding: CryptoJS.pad.Pkcs7,",
+							"            mode: CryptoJS.mode.CBC",
+							"        });",
+							"        return cipher.toString()",
+							"    }",
+							"",
+							"    pm.collectionVariables.set(\"AES_VECTOR\", AES_VECTOR);",
+							"    console.log('AES_VECTOR-----', AES_VECTOR);",
+							"",
+							"    pm.collectionVariables.set(\"AES_KEY\", AES_KEY);",
+							"    console.log('AES_KEY-----', AES_KEY);",
+							"",
+							"    const encryptedBody = encrypt(JSON.stringify(body))",
+							"    console.log(\"encryptedBody CBC------\",encryptedBody);",
+							"    pm.collectionVariables.set(\"encryptedBody\",encryptedBody);",
+							"",
+							"}",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "aes_key",
+						"value": "{{AES_KEY}}",
+						"type": "text"
+					},
+					{
+						"key": "aes_vector",
+						"value": "{{AES_VECTOR}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userData\": \"{{encryptedBody}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/app/aescbc",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"app",
+						"aescbc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AES ECB",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const AES_KEY = 'RAxKYpLmBE6ob0zp'",
+							"",
+							"const name = 'usuario';",
+							"const lastname = 'test'",
+							"const documentType = \"rut\";",
+							"const phone = '912345678'",
+							"const email = 'test.usuario@gmail.com'",
+							"",
+							"const body = {",
+							"    name,",
+							"    lastname,",
+							"    documentType,",
+							"    phone,",
+							"    email",
+							"}",
+							"",
+							"pm.collectionVariables.set(\"AES_KEY\", AES_KEY);",
+							"console.log('AES_KEY-----', AES_KEY);",
+							"",
+							"const encryptedBody = CryptoJS.AES.encrypt(JSON.stringify(body), AES_KEY).toString();",
+							"console.log(\"encryptedBody CBC------\",encryptedBody);",
+							"pm.collectionVariables.set(\"encryptedBody\",encryptedBody);",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "aes_key",
+						"value": "{{AES_KEY}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userData\": \"{{encryptedBody}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/app/aesecb",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"app",
+						"aesecb"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RSA",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const AES_KEY = 'RAxKYpLmBE6ob0zp'",
+							"const AES_VECTOR = 'I8zyA4lVhMCaJ5Kg'",
+							"",
+							"const name = 'usuario';",
+							"const lastname = 'test'",
+							"const documentType = \"rut\";",
+							"const phone = '912345678'",
+							"const email = 'test.usuario@gmail.com'",
+							"",
+							"const body = {",
+							"    name,",
+							"    lastname,",
+							"    documentType,",
+							"    phone,",
+							"    email",
+							"}",
+							"",
+							"// ------ Libreria forgeJS ------",
+							"if (!pm.globals.has(\"forgeJS\")) {",
+							"    pm.sendRequest(\"https://raw.githubusercontent.com/loveiset/RSAForPostman/master/forge.js\", (err, res) => {",
+							"        if (!err) {",
+							"            pm.globals.set(\"forgeJS\", res.text())",
+							"        }",
+							"    })",
+							"} else {",
+							"    eval(postman.getGlobalVariable(\"forgeJS\"));",
+							"",
+							"    const publicKey = forge.pki.publicKeyFromPem(pm.environment.get('PUBLIC_KEY'));",
+							"    const encryptedBody = forge.util.encode64(",
+							"        publicKey.encrypt(JSON.stringify(body), 'RSAES-PKCS1-V1_5', {",
+							"            md: forge.md.sha1.create(),",
+							"            mgf: forge.mgf.mgf1.create(forge.md.sha1.create())",
+							"        })",
+							"    );",
+							"    // x-session-key -> Encripta en RSA con la llave publica de Colombia el AES (KEY, IV)",
+							"    pm.collectionVariables.set(\"encryptedBody\", encryptedBody);",
+							"    console.log('encryptedBody-----', encryptedBody);",
+							"",
+							"}",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userData\": \"{{encryptedBody}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/app/rsa",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"app",
+						"rsa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RSA With AES CBC",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const AES_KEY = 'RAxKYpLmBE6ob0zp'",
+							"const AES_VECTOR = 'I8zyA4lVhMCaJ5Kg'",
+							"",
+							"const name = 'usuario';",
+							"const lastname = 'test'",
+							"const documentType = \"rut\";",
+							"const phone = '912345678'",
+							"const email = 'test.usuario@gmail.com'",
+							"",
+							"const BODY = {",
+							"    name,",
+							"    lastname,",
+							"    documentType,",
+							"    phone,",
+							"    email",
+							"}",
+							"",
+							"const AES = {",
+							"    AESKey: AES_KEY,",
+							"    AESVector: AES_VECTOR",
+							"}",
+							"",
+							"// ------ Libreria forgeJS ------",
+							"if (!pm.globals.has(\"forgeJS\")) {",
+							"    pm.sendRequest(\"https://raw.githubusercontent.com/loveiset/RSAForPostman/master/forge.js\", (err, res) => {",
+							"        if (!err) {",
+							"            pm.globals.set(\"forgeJS\", res.text())",
+							"        }",
+							"    })",
+							"} else {",
+							"    eval(postman.getGlobalVariable(\"forgeJS\"));",
+							"",
+							"    function encrypt(data){",
+							"        let cipher = CryptoJS.AES.encrypt(data, CryptoJS.enc.Utf8.parse(AES_KEY), {",
+							"            iv: CryptoJS.enc.Utf8.parse(AES_VECTOR), // parse the IV ",
+							"            padding: CryptoJS.pad.Pkcs7,",
+							"            mode: CryptoJS.mode.CBC",
+							"        });",
+							"        ",
+							"        return cipher.toString()",
+							"    }",
+							"    ",
+							"    const publicKey = forge.pki.publicKeyFromPem(pm.environment.get('PUBLIC_KEY'));",
+							"    const encryptedText = forge.util.encode64(",
+							"        publicKey.encrypt(JSON.stringify(AES), 'RSAES-PKCS1-V1_5', {",
+							"            md: forge.md.sha1.create(),",
+							"            mgf: forge.mgf.mgf1.create(forge.md.sha1.create())",
+							"        })",
+							"    );",
+							"    // session-key -> Encripta en RSA con la llave publica el AES (KEY, IV)",
+							"    pm.collectionVariables.set(\"SESSION_KEY\", encryptedText);",
+							"    console.log('SESSION_KEY-----', encryptedText);",
+							"",
+							"",
+							"    const encryptedBody = encrypt(JSON.stringify(BODY));",
+							"    console.log(\"encryptedBody CBC------\",encryptedBody);",
+							"    pm.collectionVariables.set(\"encryptedBody\",encryptedBody);",
+							"",
+							"}",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "session-key",
+						"value": "{{SESSION_KEY}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userData\": \"{{encryptedBody}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/app/rsa-aes",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"app",
+						"rsa-aes"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "aes_vector",
+			"value": ""
+		},
+		{
+			"key": "encryptedBody",
+			"value": ""
+		},
+		{
+			"key": "AES_VECTOR",
+			"value": ""
+		},
+		{
+			"key": "AES_KEY",
+			"value": ""
+		},
+		{
+			"key": "session-key",
+			"value": ""
+		},
+		{
+			"key": "SESSION_KEY",
+			"value": ""
+		}
+	]
+}

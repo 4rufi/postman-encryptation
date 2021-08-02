@@ -17,7 +17,8 @@
     "express-routemap": "^1.6.0",
     "http-status-codes": "^2.1.4",
     "method-override": "^2.1.2",
-    "mongoose": "~3.6.11"
+    "mongoose": "^3.6.11",
+    "uuid": "8.3.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.12"

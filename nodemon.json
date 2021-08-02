@@ -1,0 +1,6 @@
+{
+  "events": {
+    "prestart-dev": "kill-port 8005"
+  },
+  "delay": "1500"
+}

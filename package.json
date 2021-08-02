@@ -1,0 +1,29 @@
+{
+  "name": "encryptation-postman",
+  "version": "1.0.0",
+  "author": {
+    "name": "Eduardo Alarcón (Andy)",
+    "email": "eandalarcon@falabella.cl"
+  },
+  "description": "Service for make encryptation test in postman",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.5.1",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.5",
+    "crypto-browserify": "^3.12.0",
+    "crypto-js": "^4.1.1",
+    "express": "^4.7.1",
+    "express-routemap": "^1.6.0",
+    "http-status-codes": "^2.1.4",
+    "method-override": "^2.1.2",
+    "mongoose": "~3.6.11"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  },
+  "scripts": {
+    "nodemon": "nodemon ./bin/www",
+    "nodemon:debug": "nodemon --inspect ./bin/www"
+  }
+}
